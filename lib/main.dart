@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   late PageController _pageController;
   int activePage = 1;
   bool _favoriteItem = false;
-  late Future<List<Phones>> phones;
+  late Future<Phones> phones;
   int? _currentIndex;
   List<CategoryModel> categoriesList = [
     CategoryModel('Phones', Icons.smartphone, true),
@@ -193,98 +193,111 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget bestSellerGrid(BuildContext context) {
-    return GridView.count(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      crossAxisCount: 2,
-      childAspectRatio: 1 / 1.4,
-      crossAxisSpacing: 20.0,
-      mainAxisSpacing: 10,
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-      children: List.generate(5, (index) {
-        return Container(
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
+    return FutureBuilder<Phones>(
+      future: phones,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Color(0xffff6e4e),
             ),
-            color: Colors.white,
-          ),
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                Navigator.pushNamed(context, '/detail_page');
-              });
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
-                children: [
-                  Stack(
-                    children: [
-                      Image.network(
-                        'https://www.benchmark.rs/assets/img/news/edge1.jpg',
-                        height: 150,
-                        fit: BoxFit.contain,
-                      ),
-                      Align(
-                        alignment: const Alignment(1.5, 1),
-                        child: RawMaterialButton(
-                            elevation: 2.0,
-                            fillColor: Colors.white,
-                            padding: const EdgeInsets.all(5.0),
-                            shape: const CircleBorder(),
-                            onPressed: () {
-                              setState(() {
-                                _currentIndex = index;
-                                _favoriteItem = !_favoriteItem;
-                              });
-                            },
-                            child: _currentIndex == index && _favoriteItem
-                                ? const Icon(Icons.favorite)
-                                : const Icon(Icons.favorite_border)),
-                      ),
-                    ],
+          );
+        } else {
+          return GridView.count(
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            childAspectRatio: 1 / 1.5,
+            crossAxisSpacing: 20.0,
+            mainAxisSpacing: 10,
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+            children: List.generate(snapshot.data!.bestSeller!.length, (index) {
+              return Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        top: 8.0, right: 8.0, bottom: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Text(
-                          '\$1,047  ',
-                          style: TextStyle(
-                            fontFamily: 'MarkProBold',
-                            fontSize: 20,
+                  color: Colors.white,
+                ),
+                child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      Navigator.pushNamed(context, '/detail_page');
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Column(
+                      children: [
+                        Stack(
+                          children: [
+                            Image.network(
+                              snapshot.data!.bestSeller![index].picture!,
+                              height: 150,
+                              fit: BoxFit.contain,
+                            ),
+                            Align(
+                              alignment: const Alignment(1.5, 1),
+                              child: RawMaterialButton(
+                                  elevation: 2.0,
+                                  fillColor: Colors.white,
+                                  padding: const EdgeInsets.all(5.0),
+                                  shape: const CircleBorder(),
+                                  onPressed: () {
+                                    setState(() {
+                                      _currentIndex = index;
+                                      _favoriteItem = !_favoriteItem;
+                                    });
+                                  },
+                                  child: _currentIndex == index && _favoriteItem
+                                      ? const Icon(Icons.favorite)
+                                      : const Icon(Icons.favorite_border)),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 8.0, right: 8.0, bottom: 8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                '\$${snapshot.data!.bestSeller![index].priceWithoutDiscount}',
+                                style: const TextStyle(
+                                  fontFamily: 'MarkProBold',
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                '\$${snapshot.data!.bestSeller![index].discountPrice}',
+                                style: const TextStyle(
+                                    fontFamily: 'MarkProBold',
+                                    fontSize: 14,
+                                    decoration: TextDecoration.lineThrough,
+                                    color: Color(0xFFCCCCCC)),
+                              ),
+                            ],
                           ),
                         ),
-                        Text(
-                          '\$1,500',
-                          style: TextStyle(
-                              fontFamily: 'MarkProBold',
-                              fontSize: 14,
-                              decoration: TextDecoration.lineThrough,
-                              color: Color(0xFFCCCCCC)),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            snapshot.data!.bestSeller![index].title!,
+                            style: const TextStyle(
+                              fontFamily: 'MarkPro',
+                              fontSize: 12,
+                            ),
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Motorola One Edge',
-                      style: TextStyle(
-                        fontFamily: 'MarkPro',
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      }),
+                ),
+              );
+            }),
+          );
+        }
+      },
     );
   }
 
@@ -316,7 +329,7 @@ class _MyAppState extends State<MyApp> {
   Widget hotSalesCarousel() {
     return SizedBox(
       height: 182,
-      child: FutureBuilder<List<Phones>>(
+      child: FutureBuilder<Phones>(
         future: phones,
         builder: (context, snapshot) {
           return PageView.builder(
@@ -329,132 +342,158 @@ class _MyAppState extends State<MyApp> {
               });
             },
             itemBuilder: (context, pagePosition) {
-              return Stack(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(left: 10, right: 10),
-                    width: MediaQuery.of(context).size.width,
-                    height: 182,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(
-                        images[pagePosition],
-                        fit: BoxFit.cover,
-                        alignment: FractionalOffset.topCenter,
+              late bool isNew;
+              if (snapshot.data?.homeStore?[pagePosition].isNew == null) {
+                isNew = false;
+              } else {
+                isNew = snapshot.data!.homeStore![pagePosition].isNew!;
+              }
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: Color(0xffff6e4e),
+                  ),
+                );
+              } else {
+                return Stack(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 10, right: 10),
+                      width: MediaQuery.of(context).size.width,
+                      height: 182,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.network(
+                          snapshot.data!.homeStore![pagePosition].picture!,
+                          fit: BoxFit.cover,
+                          alignment: FractionalOffset.topCenter,
+                        ),
                       ),
                     ),
-                  ),
-                  pagePosition != 1
-                      ? Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            left: 35,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                  color: const Color(0xFFFF6E4E),
+                    pagePosition != 1
+                        ? Padding(
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              left: 35,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                isNew
+                                    ? Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(50),
+                                          color: const Color(0xFFFF6E4E),
+                                        ),
+                                        height: 40,
+                                        width: 40,
+                                        child: const Center(
+                                          child: Text(
+                                            'New',
+                                            style: TextStyle(
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontFamily: 'MarkProBold',
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : const SizedBox(
+                                        height: 40,
+                                      ),
+                                const SizedBox(
+                                  height: 13,
                                 ),
-                                height: 40,
-                                width: 40,
-                                child: const Center(
-                                  child: Text(
-                                    'New',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      fontFamily: 'MarkProBold',
+                                Text(
+                                  snapshot
+                                      .data!.homeStore![pagePosition].title!,
+                                  style: const TextStyle(
                                       color: Colors.white,
-                                    ),
-                                  ),
+                                      fontSize: 25,
+                                      fontFamily: 'MarkProBold'),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 13,
-                              ),
-                              const Text(
-                                'Iphone 12',
-                                style: TextStyle(
+                                Text(
+                                  snapshot
+                                      .data!.homeStore![pagePosition].subtitle!,
+                                  style: const TextStyle(
                                     color: Colors.white,
-                                    fontSize: 25,
-                                    fontFamily: 'MarkProBold'),
-                              ),
-                              const Text(
-                                'Súper. Mega. Rápido.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  padding:
-                                      MaterialStateProperty.all<EdgeInsets>(
-                                    const EdgeInsets.only(left: 30, right: 30),
+                                    fontSize: 11,
                                   ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                      const EdgeInsets.only(
+                                          left: 30, right: 30),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                onPressed: () {},
-                                child: const Text(
-                                  'Buy now!',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: 'MarkProBold',
-                                      color: Colors.black),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, left: 35, bottom: 5),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  padding:
-                                      MaterialStateProperty.all<EdgeInsets>(
-                                    const EdgeInsets.only(left: 30, right: 30),
+                                  onPressed: () {},
+                                  child: const Text(
+                                    'Buy now!',
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'MarkProBold',
+                                        color: Colors.black),
                                   ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.white),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ],
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(
+                                top: 10, left: 35, bottom: 5),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style: ButtonStyle(
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                      const EdgeInsets.only(
+                                          left: 30, right: 30),
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                     ),
                                   ),
+                                  onPressed: () {},
+                                  child: const Text(
+                                    'Buy now!',
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontFamily: 'MarkProBold',
+                                        color: Colors.black),
+                                  ),
                                 ),
-                                onPressed: () {},
-                                child: const Text(
-                                  'Buy now!',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      fontFamily: 'MarkProBold',
-                                      color: Colors.black),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                ],
-              );
+                  ],
+                );
+              }
             },
           );
         },

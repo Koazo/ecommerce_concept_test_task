@@ -35,14 +35,13 @@ class Phones {
   }
 }
 
-Future<List<Phones>> getPhones() async {
+Future<Phones> getPhones() async {
   final Uri? url = Uri.tryParse(
       'https://run.mocky.io/v3/654bd15e-b121-49ba-a588-960956b15175');
   final response = await http.get(url!);
 
   if (response.statusCode == 200) {
-    return List<Phones>.from(
-        await jsonDecode(response.body).map((x) => Phones.fromJson(x)));
+    return Phones.fromJson(json.decode(response.body));
   } else {
     throw Exception('Error: ${response.body}');
   }
@@ -64,7 +63,7 @@ class HomeStore {
       this.picture,
       this.isBuy});
 
-  HomeStore.fromJson(Map<String, dynamic> json) {
+  HomeStore.fromJson(Map<String?, dynamic> json) {
     id = json['id'];
     isNew = json['is_new'];
     title = json['title'];
@@ -73,7 +72,7 @@ class HomeStore {
     isBuy = json['is_buy'];
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String?, dynamic?> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['is_new'] = this.isNew;
