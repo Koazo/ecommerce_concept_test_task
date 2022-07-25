@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+int items = 0;
+
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
 
@@ -11,7 +13,6 @@ class _CartState extends State<Cart> {
   final String image =
       'https://avatars.mds.yandex.net/get-mpic/5235334/img_id5575010630545284324.png/orig';
   int count = 1;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -114,7 +115,7 @@ class _CartState extends State<Cart> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: 10,
+                      itemCount: items,
                       itemBuilder: ((context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(

@@ -639,6 +639,8 @@ class _MyAppState extends State<MyApp> {
         ),
         GButton(
           icon: Icons.shopping_bag_outlined,
+          text: items.toString(),
+          textColor: Colors.white,
           onPressed: () {
             setState(() {
               Navigator.pushNamed(context, '/cart');

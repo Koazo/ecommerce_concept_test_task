@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/cart_page.dart';
 import 'package:flutter_application_1/detail_info.dart';
 
 class DetailPage extends StatefulWidget {
@@ -418,6 +419,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                                       onPressed: () {
                                         setState(() {
                                           Navigator.pop(context);
+                                          items++;
                                         });
                                       },
                                       style: ButtonStyle(
