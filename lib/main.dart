@@ -1,3 +1,4 @@
+import 'package:ecommerce_concept/common/constants/app_colors.dart';
 import 'package:ecommerce_concept/features/feed/presentation/bloc/phone_list_cubit/phone_list_cubit.dart';
 import 'package:ecommerce_concept/features/feed/presentation/pages/home_page.dart';
 import 'package:ecommerce_concept/locator_service.dart' as di;
@@ -19,11 +20,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<PhonesListCubit>(
-            create: (context) => sl<PhonesListCubit>()),
+            create: (context) => sl<PhonesListCubit>()..loadPhones()),
       ],
       child: MaterialApp(
         theme: ThemeData(
-          iconTheme: const IconThemeData(color: Color(0xffff6e4e)),
+          iconTheme: const IconThemeData(color: AppColors.mainOrange),
           fontFamily: 'MarkPro',
           textTheme: const TextTheme(
             headline1: TextStyle(
