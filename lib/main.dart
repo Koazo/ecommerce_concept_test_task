@@ -9,11 +9,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();
-  runApp(const MyApp());
+  runApp(const Main());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class Main extends StatelessWidget {
+  const Main({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +33,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         home: const HomePage(),
+        routes: <String, WidgetBuilder>{
+          // '/detail_page': (BuildContext context) => DetailPage(),
+          // '/cart': (context) => Cart(),
+          '/main': (context) => const Main(),
+        },
       ),
     );
   }
