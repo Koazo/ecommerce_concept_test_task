@@ -10,12 +10,12 @@ class PhonesListCubit extends Cubit<PhonesState> {
 
   void loadPhones() async {
     if (state is PhonesLoading) return;
-
     final currentState = state;
-
-    var phones = <PhoneEntity>[];
+    PhoneEntity phones;
     if (currentState is PhonesLoaded) {
       phones = currentState.phonesList;
+    } else {
+      phones = const PhoneEntity(homeStore: [], bestSeller: []);
     }
 
     emit(PhonesLoading(phones));
@@ -24,7 +24,6 @@ class PhonesListCubit extends Cubit<PhonesState> {
     failureOrPhones.fold(
         (error) => PhonesError(message: _mapFailureToMessage(error)), (result) {
       final phones = (state as PhonesLoading).phonesList;
-      phones.addAll(result);
       emit(PhonesLoaded(phones));
     });
   }

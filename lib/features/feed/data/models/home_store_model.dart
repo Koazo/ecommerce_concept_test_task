@@ -10,7 +10,7 @@ class HomeStoreModel extends HomeStore {
     required isBuy,
   }) : super(
             id: id,
-            isNew: isNew,
+            isNew: isNew ?? false,
             title: title,
             subtitle: subtitle,
             picture: picture,

@@ -5,7 +5,6 @@ class PhoneEntity extends Equatable {
   final List<BestSeller> bestSeller;
 
   const PhoneEntity({required this.homeStore, required this.bestSeller});
-
   @override
   List<Object?> get props => [homeStore, bestSeller];
 }

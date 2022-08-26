@@ -2,6 +2,7 @@ import 'package:ecommerce_concept/common/constants/app_colors.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/categories.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/custom_app_bar.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/custom_navigation_bar.dart';
+import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/hot_sales_carousel.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/ui/best_seller_ui.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/ui/hotsales_ui.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/ui/search_ui.dart';
@@ -22,10 +23,13 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
             selectCategoriesUI(),
-            Categories(),
+            const Categories(),
             searchUI(),
             hotSalesUI(),
-            // hotsalesCarousel(),
+            const SizedBox(
+              height: 182,
+              child: HotSalesCarousel(),
+            ),
             bestSellerUI(),
             // bestSellerGrid(),
           ],

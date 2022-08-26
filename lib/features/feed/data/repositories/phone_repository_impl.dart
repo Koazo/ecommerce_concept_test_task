@@ -13,7 +13,7 @@ class PhoneRepositoryImpl implements PhoneRepository {
   PhoneRepositoryImpl(
       {required this.remoteDataSource, required this.networkInfo});
   @override
-  Future<Either<Failure, List<PhoneEntity>>> getAllPhones() async {
+  Future<Either<Failure, PhoneEntity>> getAllPhones() async {
     try {
       final remotePhone = await remoteDataSource.getAllPhones();
       return Right(remotePhone);

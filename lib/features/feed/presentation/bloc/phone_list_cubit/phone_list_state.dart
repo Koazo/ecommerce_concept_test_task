@@ -14,7 +14,7 @@ class PhonesEmpty extends PhonesState {
 }
 
 class PhonesLoading extends PhonesState {
-  final List<PhoneEntity> phonesList;
+  final PhoneEntity phonesList;
 
   const PhonesLoading(this.phonesList);
 
@@ -23,7 +23,7 @@ class PhonesLoading extends PhonesState {
 }
 
 class PhonesLoaded extends PhonesState {
-  final List<PhoneEntity> phonesList;
+  final PhoneEntity phonesList;
 
   const PhonesLoaded(this.phonesList);
 
