@@ -21,11 +21,9 @@ class PhonesListCubit extends Cubit<PhonesState> {
     emit(PhonesLoading(phones));
 
     final failureOrPhones = await getAllPhones(null);
-    failureOrPhones.fold(
-        (error) => PhonesError(message: _mapFailureToMessage(error)), (result) {
-      final phones = (state as PhonesLoading).phonesList;
-      emit(PhonesLoaded(phones));
-    });
+
+    phones = failureOrPhones.toIterable().first;
+    emit(PhonesLoaded(phones));
   }
 
   String _mapFailureToMessage(Failure error) {

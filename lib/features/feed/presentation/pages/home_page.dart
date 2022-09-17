@@ -3,6 +3,7 @@ import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_w
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/custom_app_bar.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/custom_navigation_bar.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/hot_sales_carousel.dart';
+import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/best_seller.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/ui/best_seller_ui.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/ui/hotsales_ui.dart';
 import 'package:ecommerce_concept/features/feed/presentation/widgets/home_page_widgets/ui/search_ui.dart';
@@ -16,7 +17,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: customAppBar1([ShopFilter(context: context)]),
+      appBar: customAppBar([ShopFilter(context: context)]),
       backgroundColor: AppColors.backgroundColor,
       bottomNavigationBar: const CustomNavigationBar(),
       body: SingleChildScrollView(
@@ -26,12 +27,11 @@ class HomePage extends StatelessWidget {
             const Categories(),
             searchUI(),
             hotSalesUI(),
-            const SizedBox(
-              height: 182,
-              child: HotSalesCarousel(),
-            ),
+            const HotSalesCarousel(),
             bestSellerUI(),
-            // bestSellerGrid(),
+            const BestSeller(),
+
+            //BestSellerGrid(),
           ],
         ),
       ),

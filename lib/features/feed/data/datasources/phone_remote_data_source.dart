@@ -33,6 +33,8 @@ class PhoneRemoteDataSourceImpl implements PhoneRemoteDataSource {
       PhoneModel phones =
           PhoneModel(homeStore: homeStore, bestSeller: bestSeller);
       return phones;
+    } else if (response.statusCode == 502) {
+      throw ServerException();
     } else {
       throw ServerException();
     }

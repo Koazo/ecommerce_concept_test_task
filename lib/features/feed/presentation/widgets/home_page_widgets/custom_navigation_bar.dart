@@ -27,18 +27,21 @@ class CustomNavigationBar extends StatelessWidget {
           color: Colors.white,
           curve: Curves.fastOutSlowIn,
           tabs: [
-            const GButton(
+            GButton(
               icon: Icons.circle,
               iconSize: 15,
               textColor: Colors.white,
               text: 'Explorer',
               gap: 0,
+              onPressed: () {},
             ),
             GButton(
               icon: Icons.shopping_bag_outlined,
               text: items.toString(),
               textColor: Colors.white,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/cart');
+              },
             ),
             const GButton(
               icon: Icons.favorite_border_outlined,
