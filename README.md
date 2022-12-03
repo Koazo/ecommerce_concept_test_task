@@ -1,3 +1,5 @@
+### Check 'clean-architecture' branch
+
 ## Тестовое задание
 
 https://docs.google.com/document/d/1VedkRcsN6yukGO2uWES4RuIM8KMtESZ8p7zD7nGySMs/edit
